@@ -43,7 +43,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="mt-10">
-        <div className="grid grid-cols-1 sm:flex items-center px-5 py-2 gap-3 rounded-md">
+        <div className="grid grid-cols-1 sm:flex items-center gap-3 rounded-md">
           <p className="text-2xl font-bold text-zinc-700">Billings</p>
 
           <div className="flex gap-3 sm:ml-auto">
@@ -69,7 +69,7 @@ const Dashboard = () => {
         </div>
 
         <div className="mt-5 max-w-full overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full border-2 border-zinc-200">
             <thead>
               <tr
                 className="
