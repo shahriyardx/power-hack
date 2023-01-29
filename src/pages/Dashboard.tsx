@@ -54,7 +54,7 @@ const Dashboard = () => {
                 placeholder="Search"
                 className="flex-1 w-full sm:max-w-[400px] border-0 outline-none focus:ring-0 py-3 bg-zinc-100"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value.trim())}
               />
             </div>
 
