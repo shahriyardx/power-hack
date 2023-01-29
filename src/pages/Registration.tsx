@@ -3,6 +3,7 @@ import Layout from "../components/Layout"
 import { API_BASE } from "../config"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 
 type RegistrationInput = {
   email: string
@@ -10,6 +11,7 @@ type RegistrationInput = {
 }
 
 const Registration = () => {
+  const navigte = useNavigate()
   const [regError, setRegError] = useState<string | null>()
   const {
     reset,
@@ -36,6 +38,7 @@ const Registration = () => {
 
         toast.success("Registration successful. Please login")
         reset()
+        navigte("/login")
       })
   }
 

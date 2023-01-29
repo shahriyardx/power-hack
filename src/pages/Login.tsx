@@ -1,6 +1,9 @@
-import React from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import Layout from "../components/Layout"
+import { API_BASE } from "../config"
+import { toast } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 
 type LoginInput = {
   email: string
@@ -8,14 +11,44 @@ type LoginInput = {
 }
 
 const Login = () => {
+  const navigte = useNavigate()
+  const [signError, setSignError] = useState<string | null>()
+  const [signing, setSigning] = useState<boolean>(false)
+
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInput>()
-  
+
   const handleRegister = (values: LoginInput) => {
-    console.log(values)
+    setSigning(true)
+
+    fetch(`${API_BASE}/login`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSigning(false)
+
+        if (!data.success) {
+          return setSignError(data.message)
+        } else {
+          setSignError(null)
+        }
+        
+        localStorage.setItem("power_hack_accessToken", data.accessToken)
+        navigte("/dashboard")
+      })
+      .catch(() => {
+        setSignError("Something went wrong. Please try again")
+        setSigning(false)
+      })
   }
 
   return (
@@ -26,6 +59,12 @@ const Login = () => {
         </h2>
 
         <form onSubmit={handleSubmit(handleRegister)} className="mt-10">
+          {signError && (
+            <div className="p-3 bg-red-500/10 text-red-500 rounded-md mb-5">
+              {signError}
+            </div>
+          )}
+
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
               <label htmlFor="email" className="text-lg font-semibold">
@@ -56,7 +95,7 @@ const Login = () => {
               </label>
               <input
                 type="text"
-                placeholder="Email"
+                placeholder="Password"
                 {...register("password", {
                   required: {
                     value: true,
