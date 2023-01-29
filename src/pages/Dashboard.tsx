@@ -160,7 +160,7 @@ const Dashboard = () => {
             })}
 
             <Link
-              to={`/dashboard?page=${Math.min(data?.pageCount as number, page + 1)}`}
+              to={`/dashboard?page=${Math.min(pageCount, page + 1)}`}
               className="w-8 h-8 grid place-items-center text-3xl"
             >
               <HiArrowLongRight />
