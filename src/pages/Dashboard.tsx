@@ -1,6 +1,12 @@
 import { useState } from "react"
 import Layout from "../components/Layout"
-import { BiSearch, BiPlus, BiChevronLeft, BiChevronRight, BiLoaderAlt } from "react-icons/bi"
+import {
+  BiSearch,
+  BiPlus,
+  BiChevronLeft,
+  BiChevronRight,
+  BiLoaderAlt,
+} from "react-icons/bi"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 import { HiArrowLongLeft, HiArrowLongRight } from "react-icons/hi2"
 import { Link } from "react-router-dom"
@@ -64,17 +70,23 @@ const Dashboard = () => {
                   "
                   >
                     <td>
-                      <BiLoaderAlt className="animate-spin" /> 
+                      <BiLoaderAlt className="animate-spin" />
                     </td>
                     <td>Md Shahriyar Alam</td>
                     <td>mdshahriyaralam9@gmail.com</td>
                     <td>01761333883</td>
                     <td>100</td>
                     <td className="flex items-center gap-2 text-xl">
-                      <button className="px-3 py-2 bg-zinc-400 hover:bg-zinc-500 text-white rounded-md">
+                      <button
+                        disabled
+                        className="px-3 py-2 bg-zinc-400 text-white rounded-md cursor-not-allowed"
+                      >
                         <AiOutlineEdit />
                       </button>
-                      <button className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md">
+                      <button
+                        disabled
+                        className="px-3 py-2 bg-red-700 text-white rounded-md cursor-not-allowed"
+                      >
                         <AiOutlineDelete />
                       </button>
                     </td>
