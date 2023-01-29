@@ -4,8 +4,10 @@ import { BiSearch, BiPlus, BiChevronLeft, BiChevronRight } from "react-icons/bi"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 import { HiArrowLongLeft, HiArrowLongRight } from "react-icons/hi2"
 import { Link } from "react-router-dom"
+import { useBillings } from "../hooks/useBillings"
 
 const Dashboard = () => {
+  const { data } = useBillings()
   return (
     <Layout>
       <div className="mt-10">
