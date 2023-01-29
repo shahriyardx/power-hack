@@ -78,9 +78,11 @@ const BillingModal = ({
 
     if (!billingData) {
       setIsOpen(false)
-      setTempBillings((prev) => [...prev, { ...payload, _id: identifier, loading: true }])
+      setTempBillings((prev) => [
+        ...prev,
+        { ...payload, _id: identifier, loading: true },
+      ])
     }
-
 
     mutate(payload, {
       onSuccess: () => {
@@ -235,7 +237,7 @@ const BillingModal = ({
                       </span>
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex items-center gap-2">
                       {billingData ? (
                         <button
                           type="submit"
@@ -255,6 +257,14 @@ const BillingModal = ({
                           Create Billing
                         </button>
                       )}
+
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        className="inline-flex justify-center rounded-md border border-transparent bg-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2"
+                      >
+                        Create Billing
+                      </button>
                     </div>
                   </form>
                 </div>
