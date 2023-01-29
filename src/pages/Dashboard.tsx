@@ -10,12 +10,16 @@ import { HiArrowLongLeft, HiArrowLongRight } from "react-icons/hi2"
 import { Link } from "react-router-dom"
 import { useBillings } from "../hooks/useBillings"
 import BillingModal, { BillingInput } from "../components/BillingModal"
+import DeleteBillingModal from "../components/DeleteBillingModal"
 
 const Dashboard = () => {
   const { data, refetch } = useBillings()
   const [tempBillings, setTempBillings] = useState<Array<BillingInput>>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [editingBilling, setEditingBilling] = useState<BillingInput>()
+  
+  const [isDelOpen, setIsDelOpen] = useState<boolean>(false)
+  const [delId, setDelId] = useState<string>()
 
   return (
     <Layout>
@@ -112,7 +116,10 @@ const Dashboard = () => {
                       }} className="px-3 py-2 bg-zinc-400 hover:bg-zinc-500 text-white rounded-md">
                         <AiOutlineEdit />
                       </button>
-                      <button className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md">
+                      <button onClick={() => {
+                        setDelId(billing._id)
+                        setIsDelOpen(true)
+                      }} className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md">
                         <AiOutlineDelete />
                       </button>
                     </td>
@@ -168,6 +175,14 @@ const Dashboard = () => {
         setTempBillings={setTempBillings}
         billingData={editingBilling}
       />
+      {delId && (
+        <DeleteBillingModal
+          _id={delId}
+          isOpen={isDelOpen}
+          setIsOpen={setIsDelOpen}
+          refetch={refetch}
+        />
+      )}
     </Layout>
   )
 }

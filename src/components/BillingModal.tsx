@@ -58,7 +58,11 @@ const BillingModal = ({
       body: JSON.stringify(values),
     }).then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to insert data into database. Please try again")
+        throw new Error(
+          values._id
+            ? "Failed to update data. Please try again"
+            : "Failed to insert data into database. Please try again"
+        )
       }
 
       return response.json()
