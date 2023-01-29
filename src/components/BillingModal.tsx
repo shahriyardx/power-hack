@@ -1,5 +1,5 @@
 import { Transition, Dialog } from "@headlessui/react"
-import { Dispatch, Fragment, SetStateAction } from "react"
+import { Dispatch, Fragment, SetStateAction, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useRef } from "react"
 import { useMutation } from "react-query"
@@ -22,7 +22,13 @@ type Props = {
   setTempBillings: Dispatch<SetStateAction<Array<BillingInput>>>
 }
 
-const BillingModal = ({ isOpen, setIsOpen, billingData, refetch, setTempBillings }: Props) => {
+const BillingModal = ({
+  isOpen,
+  setIsOpen,
+  billingData,
+  refetch,
+  setTempBillings,
+}: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const {
     reset,
@@ -61,12 +67,15 @@ const BillingModal = ({ isOpen, setIsOpen, billingData, refetch, setTempBillings
   const { mutate } = useMutation(addOrUpdateTodo)
 
   const submitHandler = (values: BillingInput) => {
-    const payload = {...values, payableAmount: Number(values.payableAmount)}
+    const payload = { ...values, payableAmount: Number(values.payableAmount) }
     const identifier = Math.random().toString()
-    setTempBillings((prev) => [...prev, {...payload, _id: identifier}])
+
+    if (!billingData) {
+      setTempBillings((prev) => [...prev, { ...payload, _id: identifier }])
+    }
 
     setIsOpen(false)
-    
+
     mutate(payload, {
       onSuccess: () => {
         refetch()
@@ -76,10 +85,18 @@ const BillingModal = ({ isOpen, setIsOpen, billingData, refetch, setTempBillings
       },
       onSettled: () => {
         reset()
-        setTempBillings((prev) => prev.filter(billing => billing._id !== identifier))
-      }
+        setTempBillings((prev) =>
+          prev.filter((billing) => billing._id !== identifier)
+        )
+      },
     })
   }
+
+  useEffect(() => {
+    if (billingData) {
+      reset(billingData)
+    }
+  }, [billingData, reset])
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -112,7 +129,7 @@ const BillingModal = ({ isOpen, setIsOpen, billingData, refetch, setTempBillings
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Add Billing
+                  {billingData ? "Update Billing" : "Add Billing"}
                 </Dialog.Title>
                 <div className="mt-2">
                   <form
@@ -216,7 +233,6 @@ const BillingModal = ({ isOpen, setIsOpen, billingData, refetch, setTempBillings
                         <button
                           type="submit"
                           className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                          onClick={closeModal}
                         >
                           Update Billing
                         </button>

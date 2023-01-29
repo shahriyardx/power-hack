@@ -3,8 +3,6 @@ import Layout from "../components/Layout"
 import {
   BiSearch,
   BiPlus,
-  BiChevronLeft,
-  BiChevronRight,
   BiLoaderAlt,
 } from "react-icons/bi"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
@@ -17,6 +15,7 @@ const Dashboard = () => {
   const { data, refetch } = useBillings()
   const [tempBillings, setTempBillings] = useState<Array<BillingInput>>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [editingBilling, setEditingBilling] = useState<BillingInput>()
 
   return (
     <Layout>
@@ -102,12 +101,15 @@ const Dashboard = () => {
                   "
                   >
                     <td>{billing._id}</td>
-                    <td>Md Shahriyar Alam</td>
-                    <td>mdshahriyaralam9@gmail.com</td>
-                    <td>01761333883</td>
-                    <td>100</td>
+                    <td>{billing.fullName}</td>
+                    <td>{billing.email}</td>
+                    <td>{billing.phone}</td>
+                    <td>{billing.payableAmount}</td>
                     <td className="flex items-center gap-2 text-xl">
-                      <button className="px-3 py-2 bg-zinc-400 hover:bg-zinc-500 text-white rounded-md">
+                      <button onClick={() => {
+                        setEditingBilling(billing)
+                        setIsOpen(true)
+                      }} className="px-3 py-2 bg-zinc-400 hover:bg-zinc-500 text-white rounded-md">
                         <AiOutlineEdit />
                       </button>
                       <button className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md">
@@ -164,6 +166,7 @@ const Dashboard = () => {
         setIsOpen={setIsOpen}
         refetch={refetch}
         setTempBillings={setTempBillings}
+        billingData={editingBilling}
       />
     </Layout>
   )
