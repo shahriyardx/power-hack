@@ -5,6 +5,7 @@ import { useRef } from "react"
 import { useMutation } from "react-query"
 import { API_BASE } from "../config"
 import { toast } from "react-hot-toast"
+import { BiLoaderAlt } from "react-icons/bi"
 
 export type BillingInput = {
   _id?: string
@@ -68,7 +69,7 @@ const BillingModal = ({
       return response.json()
     })
   }
-  const { mutate } = useMutation(addOrUpdateTodo)
+  const { mutate, isLoading } = useMutation(addOrUpdateTodo)
 
   const submitHandler = (values: BillingInput) => {
     const payload = { ...values, payableAmount: Number(values.payableAmount) }
@@ -76,9 +77,10 @@ const BillingModal = ({
 
     if (!billingData) {
       setTempBillings((prev) => [...prev, { ...payload, _id: identifier }])
+    } else {
+      setIsOpen(false)
     }
 
-    setIsOpen(false)
 
     mutate(payload, {
       onSuccess: () => {
@@ -92,6 +94,7 @@ const BillingModal = ({
         setTempBillings((prev) =>
           prev.filter((billing) => billing._id !== identifier)
         )
+        setIsOpen(false)
       },
     })
   }
@@ -236,8 +239,12 @@ const BillingModal = ({
                       {billingData ? (
                         <button
                           type="submit"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                          disabled={isLoading}
+                          className="disabled:cursor-not-allowed inline-flex gap-2 items-center justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         >
+                          {isLoading && (
+                            <BiLoaderAlt className="animate-spin" />
+                          )}
                           Update Billing
                         </button>
                       ) : (
