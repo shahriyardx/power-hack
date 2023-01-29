@@ -4,6 +4,7 @@ import Layout from "../components/Layout"
 import { API_BASE } from "../config"
 import { toast } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import { BiLoaderAlt } from "react-icons/bi"
 
 type LoginInput = {
   email: string
@@ -35,13 +36,13 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         setSigning(false)
-        
+
         if (!data.success) {
           return setSignError(data.message)
         } else {
           setSignError(null)
         }
-        
+
         localStorage.setItem("power_hack_accessToken", data.accessToken)
         navigte("/dashboard")
       })
@@ -118,9 +119,11 @@ const Login = () => {
           </div>
 
           <button
+            disabled={signing}
             type="submit"
-            className="px-5 py-3 bg-green-500 hover:bg-green-600 text-white w-full mt-5 text-lg"
+            className="px-5 py-3 disabled:cursor-not-allowed disabled:bg-green-700 bg-green-500 hover:bg-green-600 text-white w-full mt-5 text-lg flex items-center justify-center gap-2"
           >
+            {signing && <BiLoaderAlt className="animate-spin" />}
             Sign In
           </button>
         </form>
