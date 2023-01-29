@@ -1,10 +1,13 @@
 import { useEffect } from "react"
 import { useJwt } from "react-jwt"
 import { NavLink, useNavigate, useLocation } from "react-router-dom"
+import { useBillings } from "../hooks/useBillings"
 
 const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { data } = useBillings()
+
   const { decodedToken, isExpired } = useJwt(localStorage.getItem("power_hack_accessToken") as string)
 
   const logout = () => {
@@ -33,6 +36,7 @@ const Header = () => {
           </div>
         ) : (
           <div className="ml-auto flex items-center gap-3">
+            <p>Paid Total: {data?.totalPaid}</p>
             <button onClick={logout} className="px-3 py-2 bg-red-500 text-white rounded-md text-sm">Logout</button>
           </div>
         )}

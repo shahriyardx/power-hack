@@ -39,6 +39,7 @@ const Dashboard = () => {
       billng.email.includes(searchQuery) ||
       billng.phone.includes(searchQuery)
   )
+  
   return (
     <Layout>
       <div className="mt-10">

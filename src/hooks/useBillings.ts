@@ -10,6 +10,7 @@ type Billing = {
   billings?: Array<BillingData>
   message?: string
   pageCount: number
+  totalPaid: number
 }
 
 export const useBillings = () => {
