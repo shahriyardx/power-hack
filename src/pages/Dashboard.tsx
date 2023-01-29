@@ -8,18 +8,37 @@ import { useBillings } from "../hooks/useBillings"
 import BillingModal, { BillingInput } from "../components/BillingModal"
 import DeleteBillingModal from "../components/DeleteBillingModal"
 
+export type BillingData = BillingInput & {
+  loading: boolean
+}
+
 const Dashboard = () => {
   const location = useLocation()
-    const params = new URLSearchParams(location.search)
-  const page = params.get("page") || 1
+  const params = new URLSearchParams(location.search)
+  const perPage = 4
+  const page = Number(params.get("page")) || 1
   const { data, refetch } = useBillings()
-  const [tempBillings, setTempBillings] = useState<Array<BillingInput>>([])
+
+  const [searchQuery, setSearchQuery] = useState<string>("")
+
+  const [tempBillings, setTempBillings] = useState<Array<BillingData>>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [editingBilling, setEditingBilling] = useState<BillingInput>()
+  const [editingBilling, setEditingBilling] = useState<BillingData>()
 
   const [isDelOpen, setIsDelOpen] = useState<boolean>(false)
   const [delId, setDelId] = useState<string>()
 
+  const allBillings = tempBillings.concat(data?.billings || [])
+  const tempPageCount = Math.ceil(allBillings.length / perPage)
+  const pageCount = Math.max(tempPageCount, data?.pageCount || 0)
+
+  const paginatedBillings = allBillings.slice(0, perPage)
+  const filteredBillings = paginatedBillings.filter(
+    (billng) =>
+      billng.fullName.includes(searchQuery) ||
+      billng.email.includes(searchQuery) ||
+      billng.phone.includes(searchQuery)
+  )
   return (
     <Layout>
       <div className="mt-10">
@@ -32,6 +51,8 @@ const Dashboard = () => {
               type="text"
               placeholder="Search"
               className="flex-1 max-w-[400px] border-0 outline-none focus:ring-0 py-3 bg-zinc-100"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -63,40 +84,7 @@ const Dashboard = () => {
             </thead>
 
             <tbody>
-              {tempBillings.map((billing) => {
-                return (
-                  <tr
-                    key={billing._id}
-                    className="
-                  [&>*]:whitespace-nowrap [&>*]:text-left [&>*]:px-5 [&>*]:py-3
-                  odd:bg-zinc-100
-                  "
-                  >
-                    <td>
-                      <BiLoaderAlt className="animate-spin" />
-                    </td>
-                    <td>{billing.fullName}</td>
-                    <td>{billing.email}</td>
-                    <td>{billing.phone}</td>
-                    <td>{billing.payableAmount}</td>
-                    <td className="flex items-center gap-2 text-xl">
-                      <button
-                        disabled
-                        className="px-3 py-2 bg-zinc-400 text-white rounded-md cursor-not-allowed"
-                      >
-                        <AiOutlineEdit />
-                      </button>
-                      <button
-                        disabled
-                        className="px-3 py-2 bg-red-700 text-white rounded-md cursor-not-allowed"
-                      >
-                        <AiOutlineDelete />
-                      </button>
-                    </td>
-                  </tr>
-                )
-              })}
-              {data?.billings?.map((billing) => {
+              {filteredBillings.map((billing) => {
                 return (
                   <tr
                     key={billing._id}
@@ -105,27 +93,35 @@ const Dashboard = () => {
                       odd:bg-zinc-100
                       "
                   >
-                    <td>{billing._id}</td>
+                    <td>
+                      {billing.loading ? (
+                        <BiLoaderAlt className="animate-spin" />
+                      ) : (
+                        billing._id
+                      )}
+                    </td>
                     <td>{billing.fullName}</td>
                     <td>{billing.email}</td>
                     <td>{billing.phone}</td>
                     <td>{billing.payableAmount}</td>
                     <td className="flex items-center gap-2 text-xl">
                       <button
+                        disabled={billing.loading}
                         onClick={() => {
                           setEditingBilling(billing)
                           setIsOpen(true)
                         }}
-                        className="px-3 py-2 bg-zinc-400 hover:bg-zinc-500 text-white rounded-md"
+                        className="px-3 py-2 bg-zinc-400 hover:bg-zinc-500 text-white rounded-md disabled:cursor-not-allowed"
                       >
                         <AiOutlineEdit />
                       </button>
                       <button
+                        disabled={billing.loading}
                         onClick={() => {
                           setDelId(billing._id)
                           setIsDelOpen(true)
                         }}
-                        className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md"
+                        className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md disabled:cursor-not-allowed"
                       >
                         <AiOutlineDelete />
                       </button>
@@ -138,7 +134,7 @@ const Dashboard = () => {
         </div>
 
         <div className="mt-10">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3">
             <Link
               to="/dashboard"
               className="w-8 h-8 grid place-items-center text-3xl"
@@ -146,21 +142,19 @@ const Dashboard = () => {
               <HiArrowLongLeft />
             </Link>
 
-            {data?.pageCount &&
-              data.pageCount >= 0 &&
-              Array.from({ length: data.pageCount }, (_, i) => i + 1).map(
-                (i) => {
-                  return (
-                    <Link
-                      key={i}
-                      to={`/dashboard?page=${i}`}
-                      className={`w-8 h-8 ${page == i ? 'bg-zinc-700': 'bg-zinc-400'} grid place-items-center text-white`}
-                    >
-                      {i}
-                    </Link>
-                  )
-                }
-              )}
+            {Array.from({ length: pageCount }, (_, i) => i + 1).map((i) => {
+              return (
+                <Link
+                  key={i}
+                  to={`/dashboard?page=${i}`}
+                  className={`w-8 h-8 ${
+                    page == i ? "bg-zinc-700" : "bg-zinc-400"
+                  } grid place-items-center text-white`}
+                >
+                  {i}
+                </Link>
+              )
+            })}
 
             <Link
               to={`/dashboard?page=${data?.pageCount}`}

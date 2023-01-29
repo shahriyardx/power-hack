@@ -6,6 +6,7 @@ import { useMutation } from "react-query"
 import { API_BASE } from "../config"
 import { toast } from "react-hot-toast"
 import { BiLoaderAlt } from "react-icons/bi"
+import { BillingData } from "../pages/Dashboard"
 
 export type BillingInput = {
   _id?: string
@@ -18,9 +19,9 @@ export type BillingInput = {
 type Props = {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
-  billingData?: BillingInput
+  billingData?: BillingData
   refetch: () => void
-  setTempBillings: Dispatch<SetStateAction<Array<BillingInput>>>
+  setTempBillings: Dispatch<SetStateAction<Array<BillingData>>>
 }
 
 const BillingModal = ({
@@ -76,9 +77,8 @@ const BillingModal = ({
     const identifier = Math.random().toString()
 
     if (!billingData) {
-      setTempBillings((prev) => [...prev, { ...payload, _id: identifier }])
-    } else {
       setIsOpen(false)
+      setTempBillings((prev) => [...prev, { ...payload, _id: identifier, loading: true }])
     }
 
 

@@ -3,12 +3,13 @@ import { useQuery, useQueryClient } from "react-query"
 import { API_BASE } from "../config"
 import { BillingInput } from "../components/BillingModal"
 import { useLocation } from "react-router-dom"
+import { BillingData } from "../pages/Dashboard"
 
-type BillingData = {
+type Billing = {
   success: boolean
-  billings?: Array<BillingInput>
+  billings?: Array<BillingData>
   message?: string
-  pageCount?: number
+  pageCount: number
 }
 
 export const useBillings = () => {
@@ -27,7 +28,7 @@ export const useBillings = () => {
   }
 
   const queryClient = useQueryClient()
-  const { data, isLoading, isError, refetch } = useQuery<BillingData>(
+  const { data, isLoading, isError, refetch } = useQuery<Billing>(
     ["billings", page],
     fetchBillings
   )

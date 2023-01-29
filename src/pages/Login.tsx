@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import Layout from "../components/Layout"
 import { API_BASE } from "../config"
-import { toast } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import { BiLoaderAlt } from "react-icons/bi"
 
