@@ -43,27 +43,29 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="mt-10">
-        <div className="flex items-center px-5 py-2 gap-3 rounded-md">
+        <div className="grid grid-cols-1 sm:flex items-center px-5 py-2 gap-3 rounded-md">
           <p className="text-2xl font-bold text-zinc-700">Billings</p>
 
-          <div className="flex items-center gap-1 bg-zinc-100 px-5 rounded-md ml-auto">
-            <BiSearch className="text-zinc-400 text-xl" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="flex-1 max-w-[400px] border-0 outline-none focus:ring-0 py-3 bg-zinc-100"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          <div className="flex gap-3 sm:ml-auto">
+            <div className="flex items-center gap-1 bg-zinc-100 px-5 rounded-md flex-1">
+              <BiSearch className="text-zinc-400 text-xl" />
+              <input
+                type="text"
+                placeholder="Search"
+                className="flex-1 w-full sm:max-w-[400px] border-0 outline-none focus:ring-0 py-3 bg-zinc-100"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-          <button
-            onClick={() => setIsOpen(true)}
-            className="px-5 py-3 bg-black text-white rounded-md flex items-center gap-2"
-          >
-            Add New
-            <BiPlus className="text-lg" />
-          </button>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="px-5 py-3 bg-black text-white rounded-md flex items-center gap-2"
+            >
+              Add New
+              <BiPlus className="text-lg" />
+            </button>
+          </div>
         </div>
 
         <div className="mt-5 max-w-full overflow-x-auto">
