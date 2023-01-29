@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useJwt } from "react-jwt"
 import { NavLink, useNavigate, useLocation } from "react-router-dom"
 
@@ -5,17 +6,19 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { decodedToken, isExpired } = useJwt(localStorage.getItem("power_hack_accessToken") as string)
-  
-  if (!decodedToken || isExpired) {
-    if (location.pathname === "/dashboard") {
-      navigate("/login")
-    }
-  }
 
   const logout = () => {
     localStorage.removeItem("power_hack_accessToken")
     navigate("/login")
   }
+
+  useEffect(() => {
+    if (!decodedToken && isExpired) {
+      if (location.pathname === "/dashboard") {
+        navigate("/login")
+      }
+    }
+  }, [decodedToken, isExpired])
 
   return (
     <div className="bg-zinc-900 text-zinc-300">

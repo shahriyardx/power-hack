@@ -17,7 +17,6 @@ const Login = () => {
   const [signing, setSigning] = useState<boolean>(false)
 
   const {
-    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -36,7 +35,6 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         setSigning(false)
-
         if (!data.success) {
           return setSignError(data.message)
         } else {
