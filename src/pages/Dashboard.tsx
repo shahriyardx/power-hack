@@ -139,7 +139,7 @@ const Dashboard = () => {
         <div className="mt-10">
           <div className="flex items-center justify-center gap-3">
             <Link
-              to="/dashboard"
+              to={`/dashboard?page=${Math.max(data?.pageCount as number, page - 1)}`}
               className="w-8 h-8 grid place-items-center text-3xl"
             >
               <HiArrowLongLeft />
@@ -160,7 +160,7 @@ const Dashboard = () => {
             })}
 
             <Link
-              to={`/dashboard?page=${data?.pageCount}`}
+              to={`/dashboard?page=${Math.min(data?.pageCount as number, page + 1)}`}
               className="w-8 h-8 grid place-items-center text-3xl"
             >
               <HiArrowLongRight />
