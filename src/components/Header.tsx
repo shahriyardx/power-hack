@@ -14,7 +14,7 @@ const Header = () => {
 
   useEffect(() => {
     if (!decodedToken && isExpired) {
-      if (location.pathname === "/dashboard") {
+      if (location.pathname === "/dashboard" || location.pathname === "/") {
         navigate("/login")
       }
     }
