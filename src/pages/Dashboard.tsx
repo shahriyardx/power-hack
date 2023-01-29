@@ -15,7 +15,7 @@ export type BillingData = BillingInput & {
 const Dashboard = () => {
   const location = useLocation()
   const params = new URLSearchParams(location.search)
-  const perPage = 4
+  const perPage = 10
   const page = Number(params.get("page")) || 1
   const { data, refetch } = useBillings()
 
