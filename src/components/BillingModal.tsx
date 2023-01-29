@@ -263,7 +263,7 @@ const BillingModal = ({
                         onClick={closeModal}
                         className="inline-flex justify-center rounded-md border border-transparent bg-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2"
                       >
-                        Create Billing
+                        Cancel
                       </button>
                     </div>
                   </form>
