@@ -139,7 +139,7 @@ const Dashboard = () => {
         <div className="mt-10">
           <div className="flex items-center justify-center gap-3">
             <Link
-              to={`/dashboard?page=${Math.max(0, page - 1)}`}
+              to={`/dashboard?page=${Math.max(1, page - 1)}`}
               className="w-8 h-8 grid place-items-center text-3xl"
             >
               <HiArrowLongLeft />
