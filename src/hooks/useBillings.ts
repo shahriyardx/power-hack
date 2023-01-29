@@ -35,7 +35,6 @@ export const useBillings = () => {
   )
 
   useEffect(() => {
-    console.log(location)
     const params = new URLSearchParams(location.search)
     const pageNum = Number(params.get("page")) || 1
     setPage(pageNum)

@@ -19,7 +19,6 @@ const DeleteBillingModal = ({ isOpen, setIsOpen, refetch, _id }: Props) => {
 
   const deleteBilling = (billingId: string) => {
     const url = `${API_BASE}/delete-billing/${billingId}`
-    console.log(url)
 
     return fetch(url, {
       method: "DELETE",
